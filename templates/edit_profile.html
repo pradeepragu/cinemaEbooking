@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<div class=" bg-gray-900 pt-5 min-h-screen">
+    <div class="flex justify-center">
+        <div class="card bg-gray-900  w-3/4">
+            <div class="card-body p-5">
+                <h1 class="text-xl font-semibold text-center mb-5 text-white">Edit Profile</h1>
+                <form method="post" action="edit_profile">
+                    {% csrf_token %}
+                    {% for x in profileable %}
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="formControlReadonly" class="text-white">E-Mail</label>
+                            <input name="email" type="text" id="formControlReadonly" value="{{ x.email }}" readonly
+                                   class="form-control form-control-lg bg-gray-700 text-black rounded">
+                        </div>
+
+                        <div>
+                            <label for="phone_number" class="text-white">Phone Number</label>
+                            <input name="phone_number" type="tel" id="phone_number" value="{{ x.phone }}"
+                                   class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black">
+                        </div>
+
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="first_name" class="text-white">First name</label>
+                            <input name="first_name" type="text" id="first_name" value="{{ x.first_name }}"
+                                   class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black"
+                                   placeholder={{profileable.first_name}}>
+                        </div>
+
+                        <div>
+                            <label for="last_name" class="text-white">Last name</label>
+                            <input name="last_name" type="text" id="last_name" value="{{ x.last_name }}"
+                                   class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black"
+                                   placeholder={{customuser.last_name}}>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-white">Billing Address</label>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mt-2">
+                        <div class="col-span-2">
+                            <input name="streetAddressBilling" type="text" id="saddress"
+                                   class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black" value="{{ x.address }}">
+                            <label class="form-label text-white" for="saddress">Street Address</label>
+                        </div>
+
+                        <div>
+                            <input name="aptNumberBilling" type="text" id="aptnumber"
+                                    class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black" value="{{ x.apartNumber }}">
+                            <label class="form-label text-white" for="aptnumber">Apt #</label>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <input name="stateBilling" type="text" id="bstate"
+                                    class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black" value="{{ x.state }}"
+                                   placeholder={{customuser.stateBilling}}>
+                            <label class="form-label text-white" for="bstate">State</label>
+                        </div>
+
+                        <div>
+                            <input name="zipCodeBilling" id="bzipcode" value="{{ x.zip }}"
+                                   class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black">
+                            <label class="form-label text-white" for="bzipcode">Zip Code</label>
+                        </div>
+                        <div>
+                            <input name="country" type="text" id="country"
+                                    class="form-control form-control-lg bg-gray-700 text-white rounded focus:bg-gray-700 focus:text-black" value="{{ x.country }}">
+                            <label class="form-label text-white" for="country">Country</label>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <input type="checkbox" id="promotion" name="promotion" class="text-white" value="{{ x.is_promo }}">
+                        <label for="promotion" class="text-white"> Subscribe for Promotion</label>
+                    </div>
+                    <div class="mt-4">
+                        <button class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                                type="submit">Update
+                        </button>
+                    </div>
+                    {% endfor %}
+                </form>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <form method="POST" action="edit_password">
+                            {% csrf_token %}
+                            <button style="color:red" type="submit" value="Change Password"
+                                    class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                Change Password
+                            </button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <form method="POST" action="edit_card">
+                            {% csrf_token %}
+                            <button type="submit" value="Change Card Details"
+                                    class="w-full bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                                Change Card Details
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {% if messages %}
+                {% for message in messages %}
+                <h3 class="text-center text-red-500 mt-4">{{ message }}</h3>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

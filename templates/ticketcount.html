@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<html>
+<head>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <title>{{moviename}}</title>
+</head>
+
+<body>
+
+<div class="bg-gray-900 min-h-screen">
+    <div class="mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div class="lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
+
+            <!-- MOVIE IMAGE -->
+            <div class="lg:col-span-4 lg:row-end-1">
+                <div class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg bg-gray-800">
+                    <img src="{{ poster }}" alt="{{ moviename }} poster" class="img-fluid">
+                </div>
+            </div>
+
+            <!-- MOVIE DETAILS -->
+            <div class="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:row-span-2 lg:row-end-2 lg:mt-0 lg:max-w-none">
+                <div class="flex flex-col-reverse">
+                    <div class="mt-4">
+                        <h1 class="text-2xl font-bold tracking-tight text-gray-100 sm:text-3xl">{{moviename}}</h1>
+                    </div>
+
+                </div>
+
+                <!-- MOVIE INFORMATION  -->
+                <div class="mt-10">
+                    <h3 class="text-sm font-medium text-gray-100">Movie Information</h3>
+                    <div class="mt-4">
+                        <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
+                            <li class="text-gray-400"><span class="text-gray-300">Playing at {{theater}} </span>
+                            </li>
+                            <li class="text-gray-400"><span
+                                    class="text-gray-300">{{showTime}} on {{showDate}}</span></li>
+                            <li class="text-gray-400"><span
+                                    class="text-gray-300">{{seatsremaining}} seats remaining</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SELECTING -->
+                <div class="mt-10 border-t border-gray-700 pt-10">
+                    <h3 class="text-sm font-medium text-gray-100 mb-2 flex">Select Ticket Count</h3>
+
+                    <!-- ADULT -->
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center mr-8 gap-2">
+                            <h3 class="font-medium text-gray-100">Adult</h3>
+                            <p class="text-gray-400">(15-60)</p>
+                            <p class="text-gray-400">${{adultticket}}</p>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 mr-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="decrement()">-
+                            </button>
+                            <input id="demoInput" name="adult" type="number" min="0" max="10" value="0"
+                                   class="w-16 text-center border-gray-200 border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 ml-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="increment()">+
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- CHILD  -->
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center mr-8 gap-2">
+                            <h3 class="font-medium text-gray-100">Child</h3>
+                            <p class="text-gray-400">(2-14)</p>
+                            <p class="text-gray-400">${{childticket}}</p>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 mr-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="decrementc()">-
+                            </button>
+                            <input
+                                    id="demoInputc" name="adult" type="number" min="0" max="10" value="0"
+                                    class="w-16 text-center border-gray-200 border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 ml-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="incrementc()">+
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SENIOR  -->
+                    <div class="flex justify-between mb-2">
+                        <div class="flex items-center mr-8 gap-2">
+                            <h3 class="font-medium text-gray-100">Senior</h3>
+                            <p class="text-gray-400">(60+)</p>
+                            <p class="text-gray-400">${{seniorticket}}</p>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 mr-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="decrements()">-
+                            </button>
+                            <input
+                                    id="demoInputs" name="adult" type="number" min="0" max="10" value="0"
+                                    class="w-16 text-center border-gray-200 border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            <button class="px-2 py-1 rounded-md bg-gray-200 text-gray-700 ml-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    onclick="increments()">+
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--  SUBMIT -->
+                    <div class="flex justify-center mt-4">
+                        <button onclick="doneBtn()"
+                                class="bg-gray-800 text-white px-6 py-2 rounded-md shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            Select Seats
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function increment() {
+        let value = parseInt(document.getElementById('demoInput').value, 10);
+        value = isNaN(value) ? 0 : value;
+        if (value < 10) {
+            value++;
+        }
+        document.getElementById('demoInput').value = value;
+    }
+
+    function decrement() {
+        let value = parseInt(document.getElementById('demoInput').value, 10);
+        value = isNaN(value) ? 0 : value;
+        if (value > 0) {
+            value--;
+        }
+        document.getElementById('demoInput').value = value;
+    }
+
+    function incrementc() {
+        document.getElementById('demoInputc').stepUp();
+    }
+
+    function decrementc() {
+        document.getElementById('demoInputc').stepDown();
+    }
+
+    function increments() {
+        document.getElementById('demoInputs').stepUp();
+    }
+
+    function decrements() {
+        document.getElementById('demoInputs').stepDown();
+    }
+
+    function doneBtn() {
+        // Get the number of adult and child tickets from the input fields
+        let adultCount = parseInt(document.getElementById("demoInput").value);
+        console.log(adultCount)
+        let childCount = parseInt(document.getElementById("demoInputc").value);
+        console.log(childCount)
+        let seniorCount = parseInt(document.getElementById("demoInputs").value);
+        let showId1 = {{showId}}
+
+        //console.log('I am here')
+        if (adultCount == 0 && seniorCount == 0 && childCount == 0) {
+            alert("Please select atleast one ticket for adult or senior category.");
+        } else if (adultCount == 0 && seniorCount == 0 && (childCount > 0)) {
+            alert("Cannot have child tickets without adult or senior tickets.");
+        } else {
+            try {
+                // Code that might throw an exception
+                const totalCount = adultCount + childCount + seniorCount;
+                console.log(totalCount)
+                const url = `seatselect?show_id=${showId1}&total=${totalCount}&adult=${adultCount}&child=${childCount}&senior=${seniorCount}`;
+                console.log(url)
+                window.location.href = url;
+            } catch (error) {
+                // Code to handle the exception
+                console.error(error);
+            }
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+{% endblock %}
+

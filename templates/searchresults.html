@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="vh-100" style="background-image: url('https://i.pinimg.com/originals/cd/65/20/cd6520327ff4d0bde2bf7850c2e830a5.jpg'); min-height:890px">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="{% static 'css/searchResults.css' %}">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100" style="max-width:1500px">
+            <div class="row d-flex h-100" style="max-width:1500px">
+                <div class="col-12 col-xl-12">
+                    {% if result_list.result_count == 0 %}
+                                    <p class="text-white mb-4"><strong> Oops, we cannot find related movies in our system</strong></p>
+                                    <!-- place some recommended movie  -->
+                                {% else %}
+                                    {% for results in result_list.results%}
+                    <div class="card" style="border-radius: 15px;margin-top:25px">
+                        <div class="card-body p-5">
+                            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">                                   
+                                <div class="container" style="min-width: 280px; max-width: 280px">
+                                    <div class="card h-100 w-100">
+                                                <!-- Product image-->
+                                                <img class="card-img-top" src='{{results.poster}}' alt="..." />
+                                                <!-- Product details-->
+                                                <div class="card-body p-4">
+                                                    <div class="text-center">
+                                                        <!-- Product name-->
+                                                        <h5 class="fw-bolder">{{results.name}}</h5>
+                                                        <!-- Rating-->
+                                                        <h5 class="fw-bolder">Rating:  {{results.rating}}</h5>
+                                                    </div>
+                                                </div>
+                                                <!-- Product actions-->
+                                                <form action = "movie_description">
+                                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                    <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" value="{{ results.name }}" name="cinema_button" {{ results.name }}>
+                                                        View Movie</button></div>
+                                                </div>
+                                            </form>
+                                            </div>
+                        </div>
+                    </div>                
+                                    {% endfor %}
+                                {% endif %}
+                                    
+                            </div>                 
+                            <p class="text-center text-muted mt-5 mb-0"><a href="/">E-Cinema Booking System</a></p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

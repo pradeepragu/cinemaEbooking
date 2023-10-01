@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'home/css/seats.css' %}">
+    <link rel="stylesheet" href="../static/home/css/seats.css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body class="bg-gray-900 text-white h-screen">
+<div class="flex flex-col  justify-between">
+    <main class="mb-auto">
+        <div class="container mx-auto px-4 py-16">
+            <section>
+                <div class="text-center">
+                    {% csrf_token %}
+                    {% for i in movie %}
+                    <h1 class="text-4xl mb-3">{{i.movie_title}}</h1>
+                    <h1 class="text-4xl mb-3">{{show_room}}</h1>
+                    {% endfor %}
+                </div>
+            </section>
+            <section>
+                <div class="lg:px-[25%]">
+                    <h1 class="text-center text-3xl mb-6">Select Seats</h1>
+                    {% for message in messages %}
+                    <h3 class="text-red-500 text-center">{{message}}</h3>
+                    {% endfor %}
+                    <div class="flex flex-wrap justify-center ">
+                        {% for seatno, status in available_seats.items %}
+                        <div class="m-1">
+                            {% if status == 'O' %}
+                            <input type="checkbox" class="btn-check hidden" id="{{seatno}}" name="seat{{seatno}}"
+                                   autocomplete="off" disabled/>
+                            <label class="bg-gray-500 w-10 h-10 rounded-t-lg inline-block text-center text-sm md:text-base"
+                                   for="{{seatno}}">{{seatno}}</label>
+                            {% elif status == 'A' %}
+                            <input type="checkbox" class="btn-check hidden" id="{{seatno}}" name="seat{{seatno}}"
+                                   autocomplete="off"/>
+                            <label class="bg-green-500 w-10 h-10 rounded-t-lg inline-block text-center text-sm md:text-base"
+                                   for="{{seatno}}" onclick="changeColor(this, '{{seatno}}')">{{seatno}}</label>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-8 text-center">
+                        <div class="bg-gray-700 w-full h-10 rounded-b-lg">Screen</div>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <button id="checkout-btn" class="bg-green-500 text-white py-2 px-4 rounded-md">Checkout</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+</div>
+<footer class="py-5 bg-gray-900">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; E-Cinema Booking System 2021</p>
+    </div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+<script>
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  const selectedseats = []; // create an empty array to store selected seats
+
+  function changeColor(btn, seatno) {
+    
+    if (btn.style.backgroundColor === 'blue') {
+      btn.style.backgroundColor = 'green';
+      btn.classList.remove('selected');
+      const index = selectedseats.indexOf(seatno);
+      if (index !== -1) {
+        selectedseats.splice(index, 1); // remove the selected seat from the array
+      }
+    } else {
+      btn.style.backgroundColor = 'blue';
+      btn.classList.add('selected');
+      selectedseats.push(seatno); // add the selected seat to the array
+    }
+    
+    console.log(selectedseats); // print the selected seats array
+  }
+  
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  checkoutBtn.addEventListener('click', () => {
+    const minSeats = parseInt('{{ min_seats }}');
+    const selectedSeats = document.querySelectorAll('.selected');
+    console.log(selectedSeats);
+    if (selectedSeats.length < minSeats) {
+      alert(`Please select at least ${minSeats} seats. ${selectedSeats.length} seat selected`);
+    } else if (selectedSeats.length > minSeats) {
+      alert(`You can only select ${minSeats} seats. ${selectedSeats.length} seat selected`);
+    } else {
+       
+      const showId = parseInt('{{ showId }}');
+      const adultCount = parseInt('{{ adult_count }}');
+      const seniorCount = parseInt('{{ senior_count }}');
+      const childCount = parseInt('{{ child_count }}');
+      const totalCount = adultCount + childCount + seniorCount;
+      console.log(selectedseats);
+        // Send the POST request to the checkout endpoint
+        fetch('/seatselect/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+          },
+          body: JSON.stringify({
+            showid : showId,
+            adultCount : adultCount,
+            seniorCount : seniorCount,
+            childCount : childCount,
+            totalSeat : minSeats,
+            seats: selectedseats
+          })
+        }).then(response => {
+      const url = `seatselect?show_id=${showId}&seatsselected=${selectedseats}`;
+      console.log(url)
+      console.log('helloo')
+      window.location.href = `../checkout?show_id=${showId}&total=${totalCount}&adult=${adultCount}&child=${childCount}&senior=${seniorCount}&seatselected=${selectedseats}`;
+      });
+    }
+  });
+
+</script>
+
+</body>
+
+{% endblock content %}

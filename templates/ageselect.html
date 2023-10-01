@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Age Selection</title> -->
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Ticket Selection</title>
+    <!--Stylesheet(CSS)==========================-->
+<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+<!--==Fav-icon===============================-->
+<link rel="shortcut icon" href="/Home/img/logoicon.png"/>
+
+<!--==Import-poppins-font====================-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+<!--==Using-Font-Awesome======================-->
+<script src="https://kit.fontawesome.com/c8e4d183c2.js" crossorigin="anonymous"></script>
+
+<!--==CSS-Swiper==============================-->
+<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}"/>
+    <style>
+        body{
+            background-color: black; 
+        }
+        button{
+            font-family: "Roboto", sans-serif;
+            text-transform: capitalize;
+            outline: 0;
+            background: #af984c;
+            width: 100%;
+            border: 0;
+            padding: 5px;
+            color: #FFFFFF;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+        h1{
+            color: white;
+            text-align: center;
+        }
+        h3{
+            margin-top: 2px;
+            color: white;
+            text-align: center;
+        }
+        h5{
+            color: white;
+            text-align: center;
+        }
+        p{
+            color: #af984c5f;
+            text-align: center;
+        }
+        img{
+            width: 250px;
+            height: auto;
+        }
+        .items{
+            padding-top: 90px;
+            align-items: center;
+            margin: auto;
+        }
+        .button1{
+            border-radius: 50%;
+            font-size: 40px;
+        }
+        .button2{
+            background-color: green;
+            font-size: 20px;
+            border-radius: 10px;
+            width: 150px;
+            text-align: center;
+            align-items: center;
+            margin-left: 10px;
+        }
+        input[type="number"] {
+
+            background-color : #0a0a0a; 
+            color: #5b5555;
+          
+          }
+    </style>
+</head>
+<body>
+     
+{% if request.session.remain %}
+<form action="{% url 'ticket' show.id %}" method="POST">
+    {% csrf_token %}
+    <!------------------------------- Body Starts ---------------------------->
+    <div class="container">
+        <div class="row items">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <img src="{{movie.thumbnail.url}}">
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <br>
+
+                
+                <div class="row">
+                    <h1>{{movie.title}}</h1>
+                    <br>
+                    <h5>{{theatre.showroom}}</h5>
+                    <br>
+                    <h5>@{{show.MovieTime}} on {{show.PlayingOn}}</h5>
+                    <br>
+                    <h5>There are currently {{request.session.remain}} seats remaining.</h5>
+                </div>
+            </div>
+           
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button class="button1" onclick="decrement()" type="button">-</button>
+                    </div>
+                    <div class="col-4">
+                        <h3><input id=demoInput name = "adult" type=number min=0 max=10>Adult</h3>
+                        <p>Age: 15-60</p>
+                        <p>${{show.ticket_adult}}</p>
+                    </div>
+                    <div class="col-2">
+                        <button class="button1" onclick="increment()" type="button">+</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button class="button1" onclick="decrementc()" type="button">-</button>
+                    </div>
+                    <div class="col-4">
+                        <h3><input id=demoInputc name = "child" type=number min=0 max=10>Child</h3>
+                        <p>Age: 2-14</p>
+                        <p>${{show.ticket_child}}</p>
+                    </div>
+                    <div class="col-2">
+                        <button class="button1" onclick="incrementc()" type="button">+</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-2">
+                        <button class="button1" onclick="decrements()" type="button">-</button>
+                    </div>
+                    <div class="col-4">
+                        <h3><input id=demoInputs name = "senior" type=number min=0 max=10>Senior</h3>
+                        <p>Age: 60+</p>
+                        <p>${{show.ticket_senior}}</p>
+                    </div>
+                    <div class="col-2">
+                        <button class="button1" onclick="increments()" type="button">+</button>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        
+                        <button class="button2">Continue</button>
+                    </div>
+                </div>
+            </div>
+       
+        </div>
+    </div>
+</form>
+{% else %}
+<h1>Sorry! The Show is housefull!</h1>
+{% endif %}
+ 
+    <!--Body Ends here-->
+    <br>
+    {% if exp and expt %}
+    <div class="col-4">
+        <p>Session expires in {{exp}} seconds, please complete booking before {{expt}}</p>
+    </div>
+    {% endif %}
+    
+    <!--==footer==============================-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Cinema E-Booking 2023</p></div>
+    </footer>
+
+    <script>
+        function increment() {
+           document.getElementById('demoInput').stepUp();
+        }
+        function decrement() {
+           document.getElementById('demoInput').stepDown();
+        }
+        function incrementc() {
+            document.getElementById('demoInputc').stepUp();
+         }
+         function decrementc() {
+            document.getElementById('demoInputc').stepDown();
+         }
+         function increments() {
+            document.getElementById('demoInputs').stepUp();
+         }
+         function decrements() {
+            document.getElementById('demoInputs').stepDown();
+         }
+     </script>
+</body>
+</html>

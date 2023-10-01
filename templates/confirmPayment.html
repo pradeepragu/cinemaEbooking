@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/registration.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<div class="p-10 mb-0 pb-20 min-h-screen  bg-gray-900 text-white">
+    <div class="grid grid-cols-1 gap-4">
+        <div class="mx-auto">
+            <h1 class="text-3xl text-center mb-5">Confirm Payment</h1>
+            <form method="POST" action="confirmPayment" class="space-y-4">
+                {% csrf_token %}
+                <input name="referenceNumber" hidden="True" type="text" id="referenceNumber"
+                       value="{{ referenceNumber }}"/>
+                <ul id="credit_cards" class="divide-y divide-gray-500">
+                    {% for card in cards %}
+                    <li class="py-4">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label for="cardHolderName_{{ forloop.counter }}" class="block text-sm font-medium">Cardholder
+                                    Name:</label>
+                                <input type="text" required="true" id="cardHolderName_{{ forloop.counter }}" readonly
+                                       name="cardHolderName_{{ forloop.counter }}" value="{{ card.cardHolderName }}"
+                                       class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"/>
+                            </div>
+                            <div>
+                                <label for="cardNum_{{ forloop.counter }}" class="block text-sm font-medium">Card
+                                    Number:</label>
+                                <input type="text" required="true" id="cardNum_{{ forloop.counter }}" readonly
+                                       name="cardNum_{{ forloop.counter }}" value="{{ card.cardNum }}"
+                                       class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"/>
+                            </div>
+
+                            <div>
+                                <label for="expiryDate_{{ forloop.counter }}" class="block text-sm font-medium">Expiration
+                                    Date:</label>
+                                <input type="text" required="true" id="expiryDate_{{ forloop.counter }}" readonly
+                                       name="expiryDate_{{ forloop.counter }}" value="{{ card.expiryDate }}"
+                                       class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-700 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"/>
+                            </div>
+                        </div>
+                        <div class="text-right mt-2">
+                            <button type="submit" name="cardId" id="cardId" value="{{card.id}}"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                Select
+                            </button>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="flex justify-between mt-4">
+                    <button type="button" onclick="addCard()" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:
+outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Add Credit Card
+                    </button>
+                    <button type="submit" name="save_changes" id="save_changes"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 gap-4">
+        <div class="mx-auto">
+            <h1 class="text-3xl text-center mb-5">Confirm Payment</h1>
+            <form method="POST" action="confirmPayment" class="space-y-4">
+                {% csrf_token %}
+                <input name="referenceNumberPay" hidden="True" type="text" id="referenceNumberPay"
+                       value="{{ referenceNumber }}"/>
+                <div class="card bg-gray-700 p-5 rounded-lg">
+                    <h3 class="text-xl text-center mb-5">Enter Payment</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="card_number" class="block text-sm font-medium">Card Number</label>
+                            <input type="text" minlength="16" maxlength="16" name="card_number" id="card_number"
+                                   class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
+                                   value="{{ selectedCard.cardNum }}" placeholder="Card Number *"/>
+                        </div>
+                        <div>
+                            <label for="card_name" class="block text-sm font-medium">Card Holder Name</label>
+                            <input type="text" name="cname" id="card_name"
+                                   class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
+                                   value="{{ selectedCard.cardHolderName }}" placeholder="Card Holder Name *"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Exp. Date</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input name="month" id="month"
+                                       class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
+                                       value="{{ month }}" placeholder="MM"/>
+                                <input name="year" id="year"
+                                       class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
+                                       value="{{ year }}" placeholder="YY"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="cvv" class="block text-sm font-medium">CVV</label>
+                            <input type="text" required="True" name="cvv" id="cvv"
+                                   class="px-2 py-1 mt-1 block w-full rounded-md bg-gray-800 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
+                                   placeholder="CVV *"/>
+                        </div>
+                    </div>
+                    <div class="text-right mt-4">
+                        <button class="btn btn-outline-success" name="confirm_payment" value="payment" type="submit"
+                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Confirm Payment
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    function addCard() {
+        var cards_list = document.getElementById("credit_cards");
+        var num_cards = cards_list.getElementsByTagName("li").length;
+        console.log("add cards");
+        if (num_cards >= 3) {
+            alert("You can only add up to 3 cards.");
+            return;
+        }
+
+        var new_card_id = num_cards + 1;
+        var new_card_html = `
+            <li class="bg-gray-800 p-4 rounded-lg space-y-4">
+                <div>
+                    <label for="cardHolderName_${new_card_id}" class="block text-sm font-medium">Cardholder Name:</label>
+                    <input type="text" required="true" id="cardHolderName_${new_card_id}" name="cardHolderName_${new_card_id}" class="mt-1 block w-full rounded-md bg-gray-900 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label for="cardNum_${new_card_id}" class="block text-sm font-medium">Card Number:</label>
+                    <input type="text" required="true" id="cardNum_${new_card_id}" name="cardNum_${new_card_id}" maxlength="16" class="mt-1 block w-full rounded-md bg-gray-900 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+
+                <div>
+                    <label for="expiryDate_${new_card_id}" class="block text-sm font-medium">Expiration Date:</label>
+                    <input type="text" required="true" id="expiryDate_${new_card_id}" name="expiryDate_${new_card_id}" placeholder="MM/YY" class="mt-1 block w-full rounded-md bg-gray-900 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+            </li>
+        `;
+        cards_list.innerHTML += new_card_html;
+    }
+</script>
+{% endblock %}

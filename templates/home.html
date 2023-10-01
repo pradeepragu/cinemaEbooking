@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="icon" type="image/x-icon" href="{% static 'img/icon/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="StyleSheet_0.css">
+	<meta charset="utf-8">
+	<title> Theater Home </title>
+</head>
+
+<body>
+	<header>
+		<h1>  Theater Name  </h1>
+	</header>
+  
+	<nav id="nav_list">
+		<ul>
+			<li id="firstitem"> <a href="home.html">Home</a> </li>
+			<li> <a href="moviesearch.html">Search movies</a></li>
+			<li> <a href="promotions.html">Promotions</a> </li>
+			<li> <a href="checkout.html">Checkout</a> </li>
+			<li> <a class="lastitem">Account</a>
+				<ul>
+					<li> <a href="login"> login </a> </li>
+					<li> <a href="registration.html"> create account </a> </li>
+					{% comment %} <li> <a href="edit_profile.html"> edit profile </a> </li> {% endcomment %}
+				</ul>
+			</li>
+		</ul>
+	</nav>
+  
+	<div id="lower">
+	<form id="search">
+		<input type="text" placeholder="Search Movie" id="searchbar">
+	</form>
+	<main>
+{% comment %}
+			<div id="movie">
+			<a href="#">
+			<img src="shang-chi.jpg" alt="Logo" width="250" height="300">
+			</a>
+			<p> Insert Caption </p>
+			</div>
+{% endcomment %}
+		
+{% comment %}
+			<div id="movie">
+			<a href="#">
+			<img src="shang-chi.jpg" alt="Logo" width="250" height="300">
+			</a>
+			<p> Insert Caption </p>
+			</div>
+{% endcomment %}
+
+
+		{% comment %} <div id="movie">
+		<a href="#">
+		<img src="shang-chi.jpg" alt="Logo" width="250" height="300">
+		</a>
+		<p> Insert Caption </p>
+		</div>
+		
+		<div id="movie">
+		<a href="#">
+		<img src="shang-chi-poster-marvel.jpg" alt="Logo" width="250" height="300">
+		</a>
+		<p> Insert Caption </p>
+		</div> {% endcomment %}
+	</main>
+	</div>
+	
+	<footer>
+		<p> © Movie Company </p>
+	</footer>
+</body>
+<html>

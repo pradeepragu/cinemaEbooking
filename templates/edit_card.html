@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css" rel="stylesheet">
+
+<div class=" bg-gray-900 min-h-screen pt-5 mx-auto">
+    <div class="row mx-auto">
+        <div class="col mx-auto">
+            <div class="bg-gray-900 rounded-3xl p-10">
+                <div class="card-body p-5">
+                    <h1 class="text-3xl font-bold text-center mb-5 text-white">Add/Edit Payment Card Details</h1>
+                    <form method="post" action="edit_card">
+                        {% csrf_token %}
+                        <h2 class="text-xl font-semibold text-white mb-3">Payment Cards:</h2>
+                        <ul id="credit_cards" class="space-y-4">
+                            {% for card in cards %}
+                            <li class="flex justify-between items-center bg-gray-200 p-4 rounded-lg">
+                                <div class="flex-grow mr-5">
+                                    <label for="cardHolderName_{{ forloop.counter }}" class="block font-semibold">Cardholder
+                                        Name:</label>
+                                    <input type="text" required="true" id="cardHolderName_{{ forloop.counter }}"
+                                           name="cardHolderName_{{ forloop.counter }}" value="{{ card.cardHolderName }}"
+                                           class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                </div>
+                                <div class="flex-grow mr-5">
+                                    <label for="cardNum_{{ forloop.counter }}" class="block font-semibold">Card
+                                        Number:</label>
+                                    <input type="text" required="true" id="cardNum_{{ forloop.counter }}"
+                                           name="cardNum_{{ forloop.counter }}" value="{{ card.cardNum }}"
+                                           class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                </div>
+                                <div class="flex-grow">
+                                    <label for="expiryDate_{{ forloop.counter }}" class="block font-semibold">Expiration
+                                        Date:</label>
+                                    <input type="text" required="true" id="expiryDate_{{ forloop.counter }}"
+                                           name="expiryDate_{{ forloop.counter }}" value="{{ card.expiryDate }}"
+                                           class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                </div>
+                                <div class="flex-grow">
+                                    <label class="text-transparent">s</label>
+                                    <button type="button" onclick="deleteCard(this)"
+                                            class="bg-red-500 text-white px-4  rounded-lg hover:bg-red-600 ml-4 self-center">
+                                        Delete
+                                    </button>
+                                </div>
+
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="justify-end mt-2 gap-2 flex">
+                            <button class="add-card-button bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                    type="button" onclick="addCard()">Add Credit Card
+                            </button>
+                            <button class="save-changes-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                    type="submit">Save Changes
+                            </button>
+                        </div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        <h3 class="text-white mt-5">{{message}}</h3>
+                        {% endfor %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function deleteCard(button) {
+        console.log(button)
+        var div = button.parentNode.parentNode;
+        div.remove();
+    }
+
+
+    function addCard() {
+        var cards_list = document.getElementById("credit_cards");
+        var num_cards = cards_list.getElementsByTagName("li").length;
+
+        if (num_cards >= 3) {
+            alert("You can only add up to 3 cards.");
+            return;
+        }
+
+        var new_card_id = (num_cards + 1);
+        var new_card_html = `
+      <li class="flex justify-between items-center bg-gray-200 p-4 rounded-lg">
+        <div class="flex-grow mr-5">
+          <label for="cardHolderName_${new_card_id}" class="block font-semibold">Cardholder Name:</label>
+          <input type="text" required="true" id="cardHolderName_${new_card_id}" name="cardHolderName_${new_card_id}" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        </div>
+
+        <div class="flex-grow mr-5">
+          <label for="cardNum_${new_card_id}" class="block font-semibold">Card Number:</label>
+          <input type="text" required="true" id="cardNum_${new_card_id}" name="cardNum_${new_card_id}" maxlength="16" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        </div>
+
+        <div class="flex-grow">
+          <label for="expiryDate_${new_card_id}" class="block font-semibold">Expiration Date:</label>
+          <input type="text" required="true" id="expiryDate_${new_card_id}" name="expiryDate_${new_card_id}" placeholder="MM/YY" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        </div>
+
+
+
+        <div class="flex-grow">
+            <label class="text-transparent">s</label>
+            <button type="button" onclick="deleteCard(this)" class="bg-red-500 text-white px-4  rounded-lg hover:bg-red-600 ml-4 self-center">Delete</button>
+        </div>
+</div>
+      </li>
+    `;
+        cards_list.innerHTML += new_card_html;
+    }
+
+
+</script>
+{% endblock %}

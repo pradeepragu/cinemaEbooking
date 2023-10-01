@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!--    <link rel="stylesheet" href="{'css/registration.css'}">-->
+    <!--    <link rel="stylesheet" href="{'css/bootstrap.css'}">-->
+    <!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"-->
+    <!--          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>-->
+    <!-- Google Fonts -->
+    <!--    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>-->
+    <!-- MDB -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet"/>-->
+    <!-- MDB -->
+
+    <!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function validatePassword(event) {
+            const password = event.target.value;
+            const hasDigit = /\d/.test(password);
+            const hasSymbol = /\W/.test(password);
+            const hasValidLength = password.length >= 8;
+            document.getElementById('length-check').classList.toggle('text-green-500', hasValidLength);
+            document.getElementById('digit-check').classList.toggle('text-green-500', hasDigit);
+            document.getElementById('symbol-check').classList.toggle('text-green-500', hasSymbol);
+        }
+
+    </script>
+</head>
+<body>
+{% block content %}
+
+<section class="bg-gray-900 ">
+    <div class="p-5 flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
+        <div class="w-full bg-gray-800 rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+                    Create an account
+                </h1>
+                <form class="space-y-4 md:space-y-6" method="post" action="registration">
+                    {% csrf_token %}
+
+
+                    <div>
+                        <label for="firstName" class="block mb-2 text-sm font-medium text-white">First Name</label>
+                        <input type="text" name="first_name" id="firstName"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="John" required="">
+                    </div>
+
+                    <div>
+                        <label for="lastName" class="block mb-2 text-sm font-medium text-white">Last Name</label>
+                        <input type="text" name="last_name" id="lastName"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="Doe" required="">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-white">Your email</label>
+                        <input type="email" name="email" id="email"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="name@company.com" required="">
+                    </div>
+                    <!--                    <div>-->
+                    <!--                        <label for="password1" class="block mb-2 text-sm font-medium text-white">Password</label>-->
+                    <!--                        <input type="password" name="password1" id="password1" placeholder="••••••••"-->
+                    <!--                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+                    <!--                               required="" oninput="validatePassword(event)">-->
+                    <!--                        <ul class="mt-2 text-xs text-gray-500">-->
+                    <!--                            <li id="length-check">- Minimum 8 characters</li>-->
+                    <!--                            <li id="digit-check">- At least one numeric character</li>-->
+                    <!--                            <li id="symbol-check">- At least one symbol</li>-->
+                    <!--                        </ul>-->
+                    <!--                    </div>-->
+
+                    <div>
+                        <label for="password1" class="text-white">Password</label>
+                        <input class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               type="password" name="password1" id="password1" onInput="check()" maxlength="30"
+                               required/>
+                        <ul id="password_criteria" class="mt-2 text-gray-400 space-y-1">
+                            <li id="check0"><i class="far fa-check-circle"></i> Length more than 8.</li>
+                            <li id="check1"><i class="far fa-check-circle"></i> At least one numeric.</li>
+                            <li id="check2"><i class="far fa-check-circle"></i> At least one symbol.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <label for="password2"
+                               class="block mb-2 text-sm font-medium text-white">Confirm
+                            password</label>
+                        <input type="password" name="password2" id="password2"
+                               placeholder="••••••••"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               required="">
+                    </div>
+
+                    <div>
+                        <label for="phonenumber" class="block mb-2 text-sm font-medium text-white">Phone Number</label>
+                        <input type="text" name="phone_number" id="phonenumber"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="4044092123" required="">
+                    </div>
+
+                    <button type="button" id="toggle-payment-info"
+                            class="mt-4 text-sm font-medium text-white focus:outline-none">
+                        Show optional payment information
+                    </button>
+
+
+                    <!-- OPTIONAL -->
+                    <div id="payment-info-section" class="hidden mt-4">
+                        <div class="mt-6">
+                            <h2 class="text-lg font-semibold text-white mb-4">Optional: Payment Information</h2>
+                            <div>
+                                <label for="cardHolderName" class="block mb-2 text-sm font-medium text-white">Card
+                                    Holder
+                                    Name</label>
+                                <input type="text" name="cardHolderName" id="cardHolderName"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label for="cardNum" class="block mt-4 mb-2 text-sm font-medium text-white">Card
+                                    Number</label>
+                                <input type="text" name="cardNum" id="cardNum"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div>
+                                <label for="expiryDate" class="block mt-4 mb-2 text-sm font-medium text-white">Expiration
+                                    Date</label>
+                                <input type="text" name="expiryDate" id="expiryDate"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label for="address" class="block mt-4 mb-2 text-sm font-medium text-white">Street
+                                    Address</label>
+                                <input type="text" name="address" id="address"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="123 Main St">
+                            </div>
+                            <!--                            <div>-->
+                            <!--                                <label for="billing-address" class="block mt-4 mb-2 text-sm font-medium text-white">Billing-->
+                            <!--                                    Address</label>-->
+                            <!--                                <input type="text" name="billing-address" id="billing-address"-->
+                            <!--                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"-->
+                            <!--                                       placeholder="123 Main St">-->
+                            <!--                            </div>-->
+                            <div>
+                                <label for="aptNumber" class="block mt-4 mb-2 text-sm font-medium text-white">Apt
+                                    Number</label>
+                                <input type="text" name="aptNumber" id="aptNumber"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus               -500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Apt 4B">
+                            </div>
+                            <div>
+                                <label for="state" class="block mt-4 mb-2 text-sm font-medium text-white">State</label>
+                                <input type="text" name="state" id="state"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="California">
+                            </div>
+                            <div>
+                                <label for="country"
+                                       class="block mt-4 mb-2 text-sm font-medium text-white">Country</label>
+                                <input type="text" name="country" id="country"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="United States">
+                            </div>
+                            <div>
+                                <label for="zip" class="block mt-4 mb-2 text-sm font-medium text-white">Zip
+                                    Code</label>
+                                <input type="text" name="zip" id="zip"
+                                       class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="12345">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of the optional payment information section -->
+
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="terms" aria-describedby="terms" type="checkbox"
+                                   class="w-4 h-4 border border-gray-600 rounded bg-gray-800 focus:ring-3 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:ring-offset-gray-800"
+                                   required="">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="terms" class="font-light text-gray-400">I accept the <a
+                                    class="font-medium text-blue-500 hover:underline" href="#">Terms and
+                                Conditions</a></label>
+                        </div>
+                    </div>
+                    <div class="flex items-start mt-4">
+                        <div class="flex items-center h-5">
+                            <input id="promotion" name="promotion" aria-describedby="promotion" type="checkbox"
+                                   class="w-4 h-4 border border-gray-600 rounded bg-gray-800 focus:ring-3 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:ring-offset-gray-800">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="promotion" class="font-light text-gray-400">Subscribe to get e-mailed
+                                promotions</label>
+                        </div>
+                    </div>
+
+
+                    <button type="submit"
+                            class="w-full mt-2 relative flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        Create an account
+                    </button>
+                    <p class="text-sm font-light text-gray-400">
+                        Already have an account? <a href="#" class="font-medium text-blue-500 hover:underline">Login
+                        here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>
+
+<script type="text/javascript" href="{% static 'js/scripts.js' %}"></script>
+
+<script>
+        <!--    SHOW/HIDE OPTIONAL FIELDS-->
+         document.getElementById("toggle-payment-info").addEventListener("click", function () {
+            const paymentInfoSection = document.getElementById("payment-info-section");
+            const toggleButton = document.getElementById("toggle-payment-info");
+
+            if (paymentInfoSection.classList.contains("hidden")) {
+                paymentInfoSection.classList.remove("hidden");
+                toggleButton.textContent = "Hide optional payment information";
+            } else {
+                paymentInfoSection.classList.add("hidden");
+                toggleButton.textContent = "Show optional payment information";
+            }
+        });
+
+    // function check() {
+    //     var input = document.getElementById("password1").value;
+    //     var input1 = document.getElementById("password2").value;
+    //     if (input.length >= 8) {
+    //         document.getElementById("check0").style.color = "green";
+    //     } else {
+    //         document.getElementById("check0").style.color = "red";
+    //     }
+    //     if (input.match(/[0-9]/i)) {
+    //         document.getElementById("check1").style.color = "green";
+    //     } else {
+    //         document.getElementById("check1").style.color = "red";
+    //     }
+    //     if (input.match(/[^A-Za-z0-9-' ']/i)) {
+    //         document.getElementById("check2").style.color = "green";
+    //     } else {
+    //         document.getElementById("check2").style.color = "red";
+    //     }
+    // }
+
+    function check() {
+        var input = document.getElementById("password1").value;
+        if (input.length >= 8) {
+            document.getElementById("check0").style.color = "lime";
+        } else {
+            document.getElementById("check0").style.color = "red";
+        }
+        if (input.match(/[0-9]/i)) {
+            document.getElementById("check1").style.color = "lime";
+        } else {
+            document.getElementById("check1").style.color = "red";
+        }
+        if (input.match(/[^A-Za-z0-9-' ']/i)) {
+            document.getElementById("check2").style.color = "lime";
+        } else {
+            document.getElementById("check2").style.color = "red";
+        }
+    }
+
+    function check1() {
+        var input = document.getElementById("password1").value;
+        var input1 = document.getElementById("password2").value;
+        if (input1 == input) {
+            document.getElementById("check3").style.color = "green";
+        } else {
+            document.getElementById("check3").style.color = "red";
+        }
+    }
+</script>
+
+{% endblock %}
+</body>
+
+</html>

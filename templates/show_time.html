@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+hello world!!!
+
+<table border="1">
+{% for movie in movies %}
+
+<tr>
+    <td >"{{  movie.theatreid  }}"</td>
+    <td>"{{  movie.showDate  }}"</td>
+    <td>{{  movie.show1  }}</td>
+    <td>{{  movie.show2  }}</td>
+    <td>{{  movie.show3  }}</td>
+    <td>{{  movie.show4  }}</td>
+    <td>{{  movie.show5  }}</td>
+
+
+</tr>
+<br></br>
+{% endfor %}
+    </table>
+
+</body>
+</html>

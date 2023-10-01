@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.17/tailwind.min.css"
+          integrity="sha512-yXagpXH0ulYCN8G/Wl7GK+XI5q6zD99+pkY3L5/5vtk5A5B0j5Ir5trRlud7Q8W6bYi6UJFPD/4fs6m8PzBAMDw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+
+<section class="bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="w-full bg-gray-800 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+                    Sign in to your account
+                </h1>
+                <form class="space-y-4 md:space-y-6" id="login-form" method="post" action="/login/">
+                     {% csrf_token %}
+                    <div>
+                        <label for="id_username" name="username" class="block mb-2 text-sm font-medium text-white">Your email</label>
+                        <input id="id_username" type="email" name="username"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="name@company.com" required="">
+                    </div>
+                    <div>
+                        <label for="id_password" class="block mb-2 text-sm font-medium text-white">Password</label>
+                        <input type="password" name="password" id="id_password" placeholder="••••••••"
+                               class="bg-gray-700 border border-gray-600 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 placeholder-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               required="">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="rememberme" name="rememberme" aria-describedby="rememberme" type="checkbox"
+                                       class="w-4 h-4 border border-gray-600 rounded bg-gray-700 focus:ring-3 focus:ring-primary-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                >
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="rememberme" name="rememberme" class="text-gray-400">Remember me</label>
+                            </div>
+                        </div>
+                        <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
+                            password?</a>
+                    </div>
+                    <button type="submit"
+                            class="w-full mt-2 relative flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        Sign in
+                    </button>
+                    <p class="text-sm font-light text-gray-400">
+                        Don’t have an account yet? <a href="/registration" class="font-medium text-blue-500 hover:underline">Sign
+                        up</a>
+                    </p>
+                    <p class="text-sm font-light text-gray-400">
+                        Forgot password? <a href="/forgot-password" class="font-medium text-red-500 hover:underline">Reset</a>
+                    </p>
+                </form>
+                {% if messages %}
+                  <div class="error-messages bg-gray-800 text-white rounded-md">
+                    {% for message in messages %}
+                      <h3 class="error-message text-red-500 font-bold mb-2">{{message}}</h3>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+</html>
+
+{% endblock content %}

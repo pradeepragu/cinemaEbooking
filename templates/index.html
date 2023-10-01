@@ -1,0 +1,548 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<html>
+<body>
+<head><!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4b877571d6.js" crossorigin="anonymous"></script>
+    
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-1vjCiTtTlTpxr9XlP2lWTKO4bLy4NzjZ4+0LMizOwNlrDfOrKMYx9+9pO8E/DRjDzdr6R5of6mTF+6U5/hqjKQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+
+
+    <style>
+        /* Set slideshow container height and width */
+        .slideshow-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Set video size and position */
+        .slideshow-container iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Set button position */
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            margin-top: -30px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            outline: none;
+        }
+
+        /* Position the previous button on the left */
+        .prev {
+            left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* Position the next button on the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* Set button hover effects */
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Set active slide indicator */
+        .dot-container {
+            text-align: center;
+            padding: 10px;
+            background: #ddd;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+
+        /* Hide all slides except for the active one */
+        .mySlides {
+            display: none;
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 1s;
+        }
+
+        /* Set the animation for the slideshow */
+        @keyframes fade {
+            from {
+                opacity: .4;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Position navigation buttons outside of slideshow container */
+        .button-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+        }
+
+        .prev-button {
+            float: left;
+            margin-left: 20px;
+        }
+
+        .next-button {
+            float: right;
+            margin-right: 20px;
+        }
+
+        .container1 {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: 100px;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 100;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: scale-in .2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .popup .close-popup-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 20%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .popup .close-popup-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+       
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 999;
+                display: none;
+              }
+              
+              .popup-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 20px;
+              }
+              
+              .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 24px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #fff;
+              }
+            
+
+
+    </style>
+
+
+</head>
+
+<section class="bg-gray-900 py-5">
+    <div class="slideshow-container">
+        {% for movie in moviesNow %}
+        <div class="mySlides">
+            <iframe src="{{movie.trailer}}" frameborder="0" allowfullscreen></iframe>
+        </div>
+        {% endfor %}
+        <div class="button-container">
+            <button class="prev prev-button" onclick="plusSlides(-1)">❮</button>
+            <button class="next next-button" onclick="plusSlides(1)">❯</button>
+        </div>
+    </div>
+</section>
+
+
+<div class="bg-gray-800">
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 class="text-xl font-bold text-gray-100">Currently Showing</h2>
+
+        <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+            
+            {% for x in moviesNow %}
+            <div>
+                <div class="relative">
+                    <form action="movie_description">
+                        <div class="relative h-72 w-full overflow-hidden rounded-lg hover:scale-105 transform transition duration-500">
+                            <button value="{{ x.name }}" name="cinema_button" {{ x.name }}>
+                            <img src="{{x.poster}}" class="h-full w-full object-contain object-center ">
+                            </button>
+                        </form>
+                        {% csrf_token %}
+                    </div>
+                    <div class="flex flex-col items-center relative mt-4">
+                        <h3 class="text-sm font-medium text-gray-100">{{x.name}}</h3>
+                        <p class="card-text flex flex-wrap items-start justify-start min-h-[65px]">
+                            {% if x.category1 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-600 text-gray-200 mt-2 mr-2">{{ x.category1 }}</span>
+                            {% endif %}
+                            {% if x.category2 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-600 text-gray-200 mt-2 mr-2">{{ x.category2 }}</span>
+                            {% endif %}
+                            {% if x.category3 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-600 text-gray-200 mt-2 mr-2">{{ x.category3 }}</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    {% csrf_token %}
+
+                    <button
+                            data-movie-title="{{x.name}}"
+                            onclick="openPopup('{{ x.trailer }}')"
+                            class="w-full mt-2 relative flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        Watch Trailer<span class="sr-only">t</span></button>
+                </div>
+
+                <!-- POPUP -->
+                <div id="popup" class="fixed inset-0 z-50 hidden">
+                    <div class="absolute inset-0 bg-black opacity-75"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="relative w-2/3 h-2/3">
+                        <button class="absolute top-0 right-0 p-4 text-white" onclick="closePopup()">&#10005;</button>
+                        <iframe id="video" class="w-full h-full" frameborder="0" allowfullscreen autoplay></iframe>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    {% csrf_token %}
+
+                    <button
+                            data-movie-title="{{x.name}}"
+                            onclick="bookNow(event)"
+                            class="w-full mt-2 relative flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        Book
+                        now<span class="sr-only">t</span></button>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-white">
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 class="text-xl font-bold text-gray-900">Coming soon</h2>
+
+        <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+
+            {% for x in moviesSoon %}
+            <div>
+                <div class="relative">
+                    <form action="movie_description">
+                    <div class="relative h-72 w-full overflow-hidden rounded-lg hover:scale-105 transform transition duration-500">
+                        <button value="{{ x.name }}" name="cinema_button" {{ x.name }}>
+                        <img src="{{x.poster}}" class="h-full w-full object-contain object-center">
+                        </button>
+                    </form>
+                        {%csrf_token%}
+                    </div>
+                    <div class="relative mt-4 flex flex-col items-center  ">
+                        <h3 class="text-sm font-medium text-gray-900">{{x.name}}</h3>
+                        <p class="card-text flex flex-wrap items-start justify-start min-h-[65px]">
+                            {% if x.category1 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mt-2 mr-2">{{ x.category1 }}</span>
+                            {% endif %}
+                            {% if x.category2 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mt-2 mr-2">{{ x.category2 }}</span>
+                            {% endif %}
+                            {% if x.category3 %}
+                            <span class="inline-flex items-start px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800 mt-2 mr-2">{{ x.category3 }}</span>
+                            {% endif %}
+                        </p>
+
+
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    {% csrf_token %}
+
+                    <button
+                            data-movie-title="{{x.name}}"
+                            onclick="openPopup('{{ x.trailer }}')"
+                            class="w-full mt-2 relative flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        Watch Trailer<span class="sr-only">t</span></button>
+                </div>
+
+                <!-- POPUP -->
+                <div id="popup" class="fixed inset-0 z-50 hidden">
+                    <div class="absolute inset-0 bg-black opacity-75"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="relative w-2/3 h-2/3">
+                        <button class="absolute top-0 right-0 p-4 text-white" onclick="closePopup()">&#10005;</button>
+                        <iframe id="video" class="w-full h-full" frameborder="0" allowfullscreen autoplay></iframe>
+                    </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+<!--/section-->
+
+<!-- FOOTER START -->
+<footer class="py-5 bg-gray-900">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Cinema E-Booking 2023</p></div>
+</footer>
+<!-- FOOTER END -->
+{% if messages %}
+    <script>
+    var messages = [
+        {% for message in messages %}
+            "{{ message }}",
+        {% endfor %}
+    ];
+    alert(messages.join("\\n"));
+    </script>
+{% endif %}
+
+</body>
+
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+
+    function bookNow(event) {
+    // add click event listener to each "Book Now" button
+    var movieTitle = event.target.getAttribute("data-movie-title");
+    console.log("Book now for " + movieTitle);
+
+    // send movie title to backend to get showtime info
+    fetch(`/show_time?movie_title=${movieTitle}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.movies);
+            // create pop-up window HTML
+            var popupHtml = '<style>';
+            popupHtml += '.popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 500px; padding: 20px; border-radius: 10px; background-color: #1c1c1e; z-index: 1000; }';
+            popupHtml += '.overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 999; }';
+            popupHtml += '.text-white { color: #ffffff; }';
+            popupHtml += '.popup-info { margin-bottom: 10px; }';
+            popupHtml += '.showtime-container { display: flex; justify-content: space-around; margin-bottom: 20px; }';
+            popupHtml += '.showtime-btn { background-color: #007aff; color: #ffffff; border: none; border-radius: 5px; padding: 5px 10px; font-size: 14px; cursor: pointer; }';
+            popupHtml += '.showtime-btn:hover { background-color: #005aff; }';
+            popupHtml += '.close-popup-btn { background-color: #ff3b30; color: #ffffff; border: none; border-radius: 5px; padding: 5px 10px; font-size: 14px; cursor: pointer; }';
+            popupHtml += '.close-popup-btn:hover { background-color: #ff1b1c; }';
+            popupHtml += '</style>';
+            popupHtml += '<div class="popup">';
+            popupHtml += '<h2 class="text-white">' + movieTitle + '</h2>';
+            for (var i = 0; i < data.movies.length; i++) {
+                var movie = data.movies[i];
+                popupHtml += '<div class="popup-info text-white"><p>Theater: ' + movie.theatreid + '</p>';
+                popupHtml += '<p>Date: ' + movie.showDate + '</p></div>';
+                var showtimeContainer = document.createElement('div');
+                showtimeContainer.classList.add('showtime-container');
+                for (var j = 1; j <= 3; j++) {
+                    var showtime = 'show' + j;
+                    if (movie[showtime]) {
+                        var showtimeBtn = document.createElement('button');
+                        showtimeBtn.classList.add('showtime-btn');
+                        showtimeBtn.innerText = movie[showtime];
+                        showtimeBtn.setAttribute('data-movie-info', JSON.stringify({
+                            movieTitle: movieTitle,
+                            theatreId: movie.theatreid,
+                            showDate: movie.showDate,
+                            showTime: movie[showtime],
+                            showId: movie.showid
+                        }));
+                        showtimeContainer.appendChild(showtimeBtn);
+                    }
+                }
+                               popupHtml += '<div class="theater-date-container">';
+                popupHtml += '</div>';
+                popupHtml += showtimeContainer.outerHTML; // add showtime container HTML
+            }
+
+           if (data.movies.length === 0) {
+              popupHtml += `
+                <div class="text-white text-center rounded p-4 shadow-lg">
+                  <h3 class="font-semibold">No showtimes found</h3>
+                </div>
+              `;
+            }
+
+
+            popupHtml += '<button class="close-popup-btn">Close</button></div><div class="overlay"></div>';
+
+            // insert pop-up window HTML into DOM
+            document.body.insertAdjacentHTML('beforeend', popupHtml);
+
+            // add click event listener to close button
+            var closeBtn = document.querySelector('.close-popup-btn');
+            closeBtn.addEventListener('click', () => {
+                // remove pop-up window from DOM
+                var popup = document.querySelector('.popup');
+                var overlay = document.querySelector('.overlay');
+                popup.remove();
+                overlay.remove();
+            });
+            var showBtns = document.querySelectorAll('.showtime-btn');
+            for (let showBtn of showBtns) {
+                showBtn.addEventListener('click', () => {
+                    var movieInfo = JSON.parse(showtimeBtn.getAttribute('data-movie-info'));
+                    var url = `/ticketcount?show_id=${movieInfo.showId}`;
+                    window.location.href = url;
+                });
+            }
+        })
+        .catch(error => console.log(error));
+}
+
+function openPopup(trailerLink) {
+    var popup = document.getElementById("popup");
+    var video = document.getElementById("video");
+    video.src = trailerLink;
+    popup.classList.remove("hidden");
+  }
+  
+  function closePopup() {
+    var popup = document.getElementById("popup");
+    var video = document.getElementById("video");
+    video.src = "";
+    popup.classList.add("hidden");
+  }
+</script>
+    
+</html>
+{% endblock %}
